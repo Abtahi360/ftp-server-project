@@ -22,6 +22,17 @@ function getTopCategories() {
         return $rows;
     }
 
+      function countCategories() {
+        $con  = getConnection();
+        $sql = mysqli_prepare($con, "SELECT COUNT(*) as total FROM categories");
+        mysqli_stmt_execute($sql);
+        $result = mysqli_stmt_get_result($sql);
+        $row    = mysqli_fetch_assoc($result);
+        mysqli_close($con);
+        return $row['total'];
+    } 
+ 
+
  function getAllCategories() {
         $con  = getConnection();
         $stmt = mysqli_prepare($con, "SELECT * FROM categories ORDER BY parent_id ASC, name ASC");
