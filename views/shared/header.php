@@ -12,6 +12,7 @@ session_start();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FTP Media System — ISP Content Portal</title>
     <link rel="stylesheet" href="<?= $basePath ?>public/assets/css/style.css">
