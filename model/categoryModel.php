@@ -22,6 +22,26 @@ function getTopCategories() {
         return $rows;
     }
 
+ function getAllCategories() {
+        $con  = getConnection();
+        $stmt = mysqli_prepare($con, "SELECT * FROM categories ORDER BY parent_id ASC, name ASC");
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $rows   = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        mysqli_close($con);
+        return $rows;
+    }
+
+    function getCategoryById($id) {
+        $con  = getConnection();
+        $stmt = mysqli_prepare($con, "SELECT * FROM categories WHERE id = ? LIMIT 1");
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row    = mysqli_fetch_assoc($result);
+        mysqli_close($con);
+        return $row;
+    }
         
 
 ?>
