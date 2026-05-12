@@ -15,3 +15,9 @@ function addModerator($conn, $name, $email, $pass) {
     $stmt = $conn->prepare($sql);
     return $stmt->execute([$name, $email, $hash, $role]);
 }
+function deleteUser($conn, $uid) {
+    $sql = "DELETE FROM users WHERE id = ? AND role = 'moderator'";
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([$uid]);
+}
+?>
