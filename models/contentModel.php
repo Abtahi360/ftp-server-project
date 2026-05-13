@@ -1,19 +1,13 @@
 <?php
-require_once('../config/db.php');
+function getContentsForAdmin($conn) {
 
-function getAllContents() {
-        $con  = getConnection();
-        $sql  = "SELECT c.*, u.name AS uploader_name, cat.name AS category_name
-                 FROM contents c
-                 LEFT JOIN users u      ON c.uploader_id = u.id
-                 LEFT JOIN categories cat ON c.category_id = cat.id
-                 ORDER BY c.uploaded_at DESC";
-        $stmt = mysqli_prepare($con, $sql);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $rows   = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        mysqli_close($con);
-        return $rows;
+    $sql = "SELECT contents.*, users.name as uploader_name 
+            FROM contents 
+            JOIN users ON contents.uploader_id = users.id 
+            ORDER BY uploaded_at DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function getContentsByCategory($categoryId) {
