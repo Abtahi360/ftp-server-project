@@ -1,7 +1,8 @@
 <?php
-require_once('../config/db.php');
+   require_once('/../config/db.php');
 
-function getAllContents() {
+   
+    function getAllContents() {
         $con  = getConnection();
         $sql  = "SELECT c.*, u.name AS uploader_name, cat.name AS category_name
                  FROM contents c
@@ -99,5 +100,7 @@ function getAllContents() {
 
 
 
-    
+
+
+
 ?>
