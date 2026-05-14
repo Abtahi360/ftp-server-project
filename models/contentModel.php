@@ -17,6 +17,17 @@
         return $rows;
     }
 
+    function addContent($title, $description, $filePath, $categoryId, $uploaderId) {
+        $con  = getConnection();
+        $sql  = "INSERT INTO contents (title, description, file_path, category_id, uploader_id)
+                 VALUES (?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($con, $sql);
+        mysqli_stmt_bind_param($stmt, "sssii", $title, $description, $filePath, $categoryId, $uploaderId);
+        $ok = mysqli_stmt_execute($stmt);
+        mysqli_close($con);
+        return $ok;
+    }
+ 
     function getContentsByCategory($categoryId) {
         $con  = getConnection();
         $sql  = "SELECT c.*, u.name AS uploader_name, cat.name AS category_name
@@ -78,6 +89,19 @@
         $row    = mysqli_fetch_assoc($result);
         mysqli_close($con);
         return $row;
+    }
+     function deleteContent($id) {
+        $content = getContentById($id);
+        if (!$content) return false;
+
+        $con  = getConnection();
+        $stmt = mysqli_prepare($con, "DELETE FROM contents WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        $ok = mysqli_stmt_execute($stmt);
+        mysqli_close($con);
+
+        // Return path so the file on disk can be removed
+        return $ok ? $content['file_path'] : false;
     }
 
     function searchContents($keyword) {
