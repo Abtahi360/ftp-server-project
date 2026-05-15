@@ -1,7 +1,7 @@
 <?php
 
     session_start();
-    require_once('/../models/contentModel.php');
+    require_once('../models/contentModel.php');
 
     $action = isset($_GET['action']) ? $_GET['action'] : '';
 

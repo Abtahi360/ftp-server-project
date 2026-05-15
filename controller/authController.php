@@ -104,7 +104,6 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
         }
     }
 
-    // REGISTER
     if ($action === 'register') {
         if (!isset($_POST['submit'])) {
             header('location: ../views/auth/register.php');
@@ -116,19 +115,19 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
             exit;
         }
 
-        $name     = trim($_POST['name'] ?? '');
-        $email    = trim($_POST['email'] ?? '');
+        $name= trim($_POST['name'] ?? '');
+        $email= trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
-        $confirm  = $_POST['confirm_password'] ?? '';
-        $role     = $_POST['role'] ?? 'moderator';
+        $confirm =$_POST['confirm_password'] ?? '';
+        $role= $_POST['role'] ?? 'moderator';
 
 
         $errors = [];
-        if ($name === ''){
+        if ($name===''){
             $errors[] = "Name is required.";
         }
 
-        if ($email === '')
+        if ($email=== '')
             $errors[] = "Email is required.";
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -136,7 +135,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
         if (strlen($password) < 8)
             $errors[] = "Password must be at least 8 characters.";
-        if ($password !== $confirm) 
+        if ($password!== $confirm) 
             $errors[] = "Passwords do not match.";
 
         if (!in_array($role, ['admin', 'moderator']))
@@ -176,7 +175,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
         exit;
     }
 
-    // UPDATE PROFILE
+
     if ($action === 'update_profile') {
         if (!isset($_SESSION['user_id'])) {
             header('location: ../views/auth/login.php');
@@ -188,12 +187,12 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
             exit;
         }
 
-        $id    = $_SESSION['user_id'];
-        $name  = trim($_POST['name'] ?? '');
-        $email = trim($_POST['email'] ?? '');
+        $id = $_SESSION['user_id'];
+        $name= trim($_POST['name'] ?? '');
+        $email= trim($_POST['email'] ?? '');
 
         $errors = [];
-        if ($name === '')  $errors[] = "Name is required.";
+        if ($name==='')  $errors[] = "Name is required.";
         if ($email === '') $errors[] = "Email is required.";
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email format.";
 
@@ -209,22 +208,23 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
         }
 
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === 0) {
-            $file    = $_FILES['profile_picture'];
-            $maxSize = 2 * 1024 * 1024;
+            $file= $_FILES['profile_picture'];
+            $maxSize= 2 * 1024 * 1024;
 
-            $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+            $finfo= finfo_open(FILEINFO_MIME_TYPE);
             $detectedMime = finfo_file($finfo, $file['tmp_name']);
             finfo_close($finfo);
 
-            $allowedMime = ['image/jpeg', 'image/png', 'image/gif'];
-            $allowedExt  = ['jpg', 'jpeg', 'png', 'gif'];
-            $ext         = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowedMime =['image/jpeg', 'image/png', 'image/gif'];
+            $allowedExt= ['jpg', 'jpeg', 'png', 'gif'];
+            $ext= strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
             if (!in_array($detectedMime, $allowedMime) || !in_array($ext, $allowedExt)) {
                 $_SESSION['error'] = "Profile picture must be a JPG, PNG, or GIF image.";
                 header('location: ../views/auth/profile.php');
                 exit;
             }
+
 
             if ($file['size'] > $maxSize) {
                 $_SESSION['error'] = "Profile picture must be under 2 MB.";
@@ -249,8 +249,8 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
         }
 
         updateUserProfile($id, $name, $email);
-        $_SESSION['name']    = $name;
-        $_SESSION['email']   = $email;
+        $_SESSION['name'] = $name;
+        $_SESSION['email'] = $email;
         $_SESSION['success'] = "Profile updated successfully.";
         header('location: ../views/auth/profile.php');
         exit;
@@ -269,10 +269,10 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
             exit;
         }
 
-        $id      = $_SESSION['user_id'];
+        $id= $_SESSION['user_id'];
         $current = $_POST['current_password'] ?? '';
-        $new     = $_POST['new_password'] ?? '';
-        $confirm = $_POST['confirm_new'] ?? '';
+        $new = $_POST['new_password'] ?? '';
+        $confirm= $_POST['confirm_new'] ?? '';
 
         $user = getUserById($id);
 
@@ -299,7 +299,6 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
         header('location: ../views/auth/profile.php');
         exit;
     }
-
 
 
     header('location: ../views/auth/login.php');
