@@ -120,7 +120,23 @@
         mysqli_close($con);
         return $rows;
     }
+function incrementDownload($id) {
+    $con  = getConnection();
+    $stmt = mysqli_prepare($con, "UPDATE contents SET download_count = download_count + 1 WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_close($con);
+}
 
+function countContents() {
+    $con  = getConnection();
+    $stmt = mysqli_prepare($con, "SELECT COUNT(*) as total FROM contents");
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row    = mysqli_fetch_assoc($result);
+    mysqli_close($con);
+    return $row['total'];
+}
 
 
 
