@@ -1,7 +1,7 @@
 <?php
 
     header('Content-Type: application/json');
-    require_once('/../models/categoryModel.php');
+    require_once(__DIR__ . '/../models/categoryModel.php');
 
 
     $categories = getTopCategories();

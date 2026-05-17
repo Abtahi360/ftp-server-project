@@ -8,7 +8,7 @@
         exit;
     }
 
-    require_once('/../models/userModel.php');
+    require_once(__DIR__ . '/../models/userModel.php');
 
     $moderators = getAllModerators();
 
@@ -17,9 +17,5 @@
         unset($m['password_hash']);
     }
 
-    echo json_encode([
-        'success'    => true,
-        'moderators' => $moderators,
-        'count'      => count($moderators)
-    ]);
+    echo json_encode(['success'    => true, 'moderators' => $moderators, 'count'      => count($moderators)]);
 ?>
