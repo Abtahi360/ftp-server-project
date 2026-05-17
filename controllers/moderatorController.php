@@ -82,9 +82,13 @@
                 $catGroup = 'Images';
                 $allowedExt  = ['jpg', 'jpeg', 'png', 'gif'];
                 $allowedMime = ['image/jpeg', 'image/png', 'image/gif'];
+            }else if (strpos($catName, 'software') !== false || strpos($catName, 'program') !== false || strpos($catName, 'app') !== false) {
+                $catGroup    = 'Software';
+                $allowedExt  = ['exe', 'msi', 'zip'];
+                $allowedMime = ['application/x-msdownload', 'application/x-msi', 'application/zip', 'application/octet-stream'];
             } else {
                 
-                $allowedExt = ['mp4','avi','mkv','mp3','wav','zip','pdf','doc','docx','jpg','jpeg','png','gif'];
+                $allowedExt = ['mp4','avi','mkv','mp3','wav','zip','pdf','doc','docx','jpg','jpeg','png','gif', 'exe'];
                 $allowedMime = [
                     'video/mp4','video/x-msvideo','video/x-matroska',
                     'audio/mpeg','audio/wav','audio/x-wav',
@@ -93,7 +97,8 @@
                     'application/msword',
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                     'image/jpeg','image/png','image/gif',
-                    'application/octet-stream'
+                                        'application/x-msdownload'
+
                 ];
             }
 
