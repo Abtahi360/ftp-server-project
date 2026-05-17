@@ -1,6 +1,6 @@
 <?php
 
-    require_once('/../config/db.php');
+    require_once(__DIR__ . '/../config/db.php');
 
     function addRequest($ip, $contentTitle, $categoryRequested, $message) {
         $con  = getConnection();
