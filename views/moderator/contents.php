@@ -44,8 +44,8 @@
                     <td><?= intval($c['download_count']) ?></td>
                     <td><?= date('M d, Y', strtotime($c['uploaded_at'])) ?></td>
                     <td>
-                        <a href="../../controllers/memberController.php?action=download&id=<?= intval($c['id']) ?>"
-                           class="btn btn-sm">Download</a>
+                        <a href="../../controllers/memberController.php?action=download&id=<?= intval($c['id']) ?>&skip_count=1"
+   class="btn btn-sm">Download</a>
 
                         <?php if ($_SESSION['role'] === 'admin' || $c['uploader_id'] == $_SESSION['user_id']): ?>
                             <a href="../../controllers/moderatorController.php?action=delete_content&id=<?= intval($c['id']) ?>"

@@ -15,7 +15,7 @@
             exit;
         }
 
-        incrementDownload($id);
+        // incrementDownload($id);
 
         // $filePath = __DIR__ . "/../public/uploads/contents/" . $content['file_path'];
         $filePath = __DIR__ . "/../public/uploads/contents/" . basename($content['file_path']);
@@ -23,15 +23,23 @@
     die("Path tried: " . $filePath . " | DB value: " . $content['file_path']);
 }
         
+$skipCount = isset($_GET['skip_count']) && $_SESSION['role'] ?? '' !== '';
 
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($content['file_path']) . '"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Content-Length: ' . filesize($filePath));
-        readfile($filePath);
-        exit;
+if (!$skipCount) {
+    incrementDownload($id);
+}
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($content['file_path']) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($filePath));
+    ob_clean();
+    flush();
+    readfile($filePath);
+    exit;
+
     }
 
     header('location: ../views/member/home.php');
