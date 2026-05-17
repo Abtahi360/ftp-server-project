@@ -4,8 +4,8 @@
     require_once('../../models/contentModel.php');
     require_once('../../models/categoryModel.php');
 
-    $recent     = getRecentContents(6);
-    $topDown    = getMostDownloaded(6);
+    $recent = getRecentContents(6);
+    $topDown = getMostDownloaded(6);
     $categories = getTopCategories();
 
     include('../shared/header.php');
@@ -13,7 +13,7 @@
 
 <section class="hero">
     <h1>&#128190; ISP Media Content Portal</h1>
-    <p>Browse, download, and request media content — movies, music, software, eBooks, and more.</p>
+    <p>Browse, download, and request media content - movies, music, software, eBooks, and more.</p>
     <a href="search.php" class="btn btn-primary">&#128269; Search Content</a>
     <a href="browse.php" class="btn btn-secondary">Browse All</a>
 </section>
