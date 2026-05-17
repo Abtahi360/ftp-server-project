@@ -1,6 +1,6 @@
 <?php
     header('Content-Type: application/json');
-    require_once('/../models/contentModel.php');
+    require_once(__DIR__ . '/../models/contentModel.php');
 
     $keyword = trim($_GET['q'] ?? '');
 

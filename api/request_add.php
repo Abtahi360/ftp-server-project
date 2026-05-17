@@ -5,7 +5,7 @@
         echo json_encode(['success' => false, 'error' => 'POST method required.']);
         exit;
     }
-    require_once('/../models/requestModel.php');
+    require_once(__DIR__ . '/../models/requestModel.php');
 
     $contentTitle      = trim($_POST['content_title'] ?? '');
     $categoryRequested = trim($_POST['category_requested'] ?? '');
@@ -24,8 +24,5 @@
 
     $ok = addRequest($ip, $contentTitle, $categoryRequested, $message);
 
-    echo json_encode([
-        'success' => $ok,
-        'message' => $ok ? 'Your request has been submitted. Thank you!' : 'Submission failed. Please try again.'
-    ]);
+    echo json_encode(['success' => $ok, 'message' => $ok ? 'Your request has been submitted. Thank you!' : 'Submission failed. Please try again.']);
 ?>
