@@ -17,11 +17,12 @@
 
         incrementDownload($id);
 
-        $filePath = __DIR__ . "/../public/uploads/contents/" . $content['file_path'];
-
+        // $filePath = __DIR__ . "/../public/uploads/contents/" . $content['file_path'];
+        $filePath = __DIR__ . "/../public/uploads/contents/" . basename($content['file_path']);
         if (!file_exists($filePath)) {
-            die("File not found.");
-        }
+    die("Path tried: " . $filePath . " | DB value: " . $content['file_path']);
+}
+        
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
