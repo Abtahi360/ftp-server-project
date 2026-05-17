@@ -1,12 +1,4 @@
 <?php
-/*
- * File   : views/admin/upload_content.php
- * Purpose: Admin — upload new media content
- * Task   : Task 2 — Student 23-50453-1
- *
- * CHANGES (corrections applied):
- * - CSRF hidden field added to form
- */
 
     session_start();
 
@@ -122,7 +114,6 @@ function validateUpload() {
                 ok = false;
             }
         } else {
-            // Default allowed types for other categories (like Software)
             var defaultAllowed = ['mp4','avi','mkv','mp3','wav','zip','pdf','doc','docx','jpg','jpeg','png','gif'];
             if (defaultAllowed.indexOf(ext) === -1) {
                 showError('upFileErr', 'File type not allowed.');
