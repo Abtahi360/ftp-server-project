@@ -1,4 +1,5 @@
 <?php
+    require_once(__DIR__ . '/../models/requestModel.php');
 
 
     session_start();
@@ -16,8 +17,6 @@
     }
 
 
-    require_once(__DIR__ . '/../models/requestModel.php');
-
     $data =json_decode(file_get_contents('php://input'), true);
     $id  =intval($data['request_id'] ?? 0);
     $status =trim($data['status'] ?? '');
@@ -34,5 +33,8 @@
 
     $ok =updateRequestStatus($id, $status);
 
-    echo json_encode(['success' => $ok, 'message'=> $ok ? "Status updated to '$status'." : 'Update failed.']);
+    echo json_encode([
+        'success' => $ok,
+        'message'=> $ok ? "Status updated to '$status'." : 'Update failed.'
+    ]);
 ?>

@@ -1,11 +1,8 @@
 <?php
     session_start();
-
     if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-        header('location: ../auth/login.php');
-        exit;
+        header('location: ../auth/login.php'); exit;
     }
-
     require_once('../../models/userModel.php');
     require_once('../../models/contentModel.php');
     require_once('../../models/categoryModel.php');
@@ -19,93 +16,100 @@
     include('../shared/header.php');
 ?>
 
-<h2>&#128187; Admin Dashboard</h2>
-<p>Welcome back, <strong><?= htmlspecialchars($_SESSION['name']) ?></strong>.</p>
+<div class="page-header">
+    <h2>⚙️ Admin Dashboard</h2>
+    <span style="font-size:13px;color:var(--text2)">Welcome back, <strong><?= htmlspecialchars($_SESSION['name']) ?></strong></span>
+</div>
 
+<!-- Stat Cards -->
 <div class="stat-grid">
     <div class="stat-card">
-        <div class="stat-number"><?= $totalContents ?></div>
-        <div class="stat-label">Total Contents</div>
+        <div class="stat-icon stat-icon-blue">📁</div>
+        <div class="stat-body">
+            <div class="stat-number"><?= $totalContents ?></div>
+            <div class="stat-label">Total Contents</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-number"><?= $totalCategories ?></div>
-        <div class="stat-label">Categories</div>
+        <div class="stat-icon stat-icon-purple">🗂️</div>
+        <div class="stat-body">
+            <div class="stat-number"><?= $totalCategories ?></div>
+            <div class="stat-label">Categories</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-number"><?= $totalModerators ?></div>
-        <div class="stat-label">Moderators</div>
+        <div class="stat-icon stat-icon-green">👥</div>
+        <div class="stat-body">
+            <div class="stat-number"><?= $totalModerators ?></div>
+            <div class="stat-label">Moderators</div>
+        </div>
     </div>
     <div class="stat-card stat-pending">
-        <div class="stat-number"><?= $pendingRequests ?></div>
-        <div class="stat-label">Pending Requests</div>
+        <div class="stat-icon stat-icon-orange">📬</div>
+        <div class="stat-body">
+            <div class="stat-number"><?= $pendingRequests ?></div>
+            <div class="stat-label">Pending Requests</div>
+        </div>
     </div>
 </div>
 
+<!-- Quick Actions -->
 <div class="section">
-    <h3>Quick Actions</h3>
-    <div class="action-links">
-        <a href="moderators.php"      class="btn btn-primary">&#128100; Manage Moderators</a>
-        <a href="add_moderator.php"   class="btn btn-secondary">+ Add Moderator</a>
-        <a href="contents.php"        class="btn btn-primary">&#128190; Manage Contents</a>
-        <a href="upload_content.php"  class="btn btn-secondary">+ Upload Content</a>
-        <a href="requests.php"        class="btn btn-warning">&#128231; View Requests (<?= $pendingRequests ?> pending)</a>
+    <div class="section-header"><h2 class="section-title">⚡ Quick Actions</h2></div>
+    <div class="quick-actions">
+        <a href="moderators.php" class="quick-action-card">
+            <div class="qa-icon">👥</div> Manage Moderators
+        </a>
+        <a href="add_moderator.php" class="quick-action-card">
+            <div class="qa-icon">➕</div> Add Moderator
+        </a>
+        <a href="contents.php" class="quick-action-card">
+            <div class="qa-icon">📁</div> Manage Contents
+        </a>
+        <a href="upload_content.php" class="quick-action-card">
+            <div class="qa-icon">⬆️</div> Upload Content
+        </a>
+        <a href="requests.php" class="quick-action-card">
+            <div class="qa-icon">📬</div> View Requests <?= $pendingRequests > 0 ? "<span style='background:var(--orange);color:#fff;border-radius:99px;padding:1px 7px;font-size:11px;margin-left:4px;'>{$pendingRequests}</span>" : '' ?>
+        </a>
     </div>
 </div>
 
-
+<!-- Moderator Quick List via AJAX -->
 <div class="section">
-    <h3>Moderator Quick List</h3>
-    <button onclick="loadModerators()" class="btn btn-sm">Refresh</button>
-    <div id="modListBox" style="margin-top:12px;">
-        <span class="loading-text">Click Refresh to load.</span>
+    <div class="section-header">
+        <h2 class="section-title">👥 Moderator List</h2>
+        <button onclick="loadModerators()" class="btn btn-secondary btn-sm">🔄 Refresh</button>
+    </div>
+    <div class="table-wrapper">
+        <div id="modListBox" style="padding:24px;">
+            <span class="muted">Click Refresh to load the moderator list.</span>
+        </div>
     </div>
 </div>
 
 <script>
-
 function loadModerators() {
-    var box   = document.getElementById('modListBox');
-    box.innerHTML = '<span class="loading-text">Loading...</span>';
-
+    var box = document.getElementById('modListBox');
+    box.innerHTML = '<div class="loading-pulse" style="padding:12px"><span></span><span></span><span></span></div>';
     var xhttp = new XMLHttpRequest();
     xhttp.open('get', '../../api/admin_moderators.php', true);
     xhttp.send();
-
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var resp = JSON.parse(this.responseText);
-
-            if (!resp.success) {
-                box.innerHTML = '<span class="alert alert-error">' + resp.error + '</span>';
-                return;
-            }
-
-            if (resp.count === 0) {
-                box.innerHTML = '<p class="empty-msg">No moderators yet.</p>';
-                return;
-            }
-
-            var html = '<table class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Created</th></tr></thead><tbody>';
+            if (!resp.success) { box.innerHTML = '<div class="alert alert-error" style="margin:12px">' + resp.error + '</div>'; return; }
+            if (resp.count === 0) { box.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text3)">No moderators added yet.</div>'; return; }
+            var html = '<div class="table-scroll"><table class="data-table"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Joined</th></tr></thead><tbody>';
             resp.moderators.forEach(function(m) {
-                html += '<tr>';
-                html += '<td>' + parseInt(m.id) + '</td>';
-                html += '<td>' + escapeHtml(m.name) + '</td>';
-                html += '<td>' + escapeHtml(m.email) + '</td>';
-                html += '<td>' + escapeHtml(m.created_at) + '</td>';
-                html += '</tr>';
+                html += '<tr><td>' + parseInt(m.id) + '</td><td><strong>' + escapeHtml(m.name) + '</strong></td><td>' + escapeHtml(m.email) + '</td><td>' + escapeHtml(m.created_at) + '</td></tr>';
             });
-            html += '</tbody></table>';
+            html += '</tbody></table></div>';
             box.innerHTML = html;
         }
     };
 }
-
-function escapeHtml(str) {
-    var d = document.createElement('div');
-    d.appendChild(document.createTextNode(str || ''));
-    return d.innerHTML;
-}
+function escapeHtml(s) { var d=document.createElement('div'); d.appendChild(document.createTextNode(s||'')); return d.innerHTML; }
 </script>
 
 <?php include('../shared/footer.php'); ?>
- 

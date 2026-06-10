@@ -17,5 +17,9 @@
         unset($m['password_hash']);
     }
 
-    echo json_encode(['success'    => true, 'moderators' => $moderators, 'count'      => count($moderators)]);
+    echo json_encode([
+        'success'    => true,
+        'moderators' => $moderators,
+        'count'      => count($moderators)
+    ]);
 ?>
