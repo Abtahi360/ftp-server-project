@@ -7,10 +7,10 @@
     }
     require_once(__DIR__ . '/../models/requestModel.php');
 
-    $contentTitle      = trim($_POST['content_title'] ?? '');
+    $contentTitle   = trim($_POST['content_title'] ?? '');
     $categoryRequested = trim($_POST['category_requested'] ?? '');
-    $message           = trim($_POST['message'] ?? '');
-    $ip                = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $message     = trim($_POST['message'] ?? '');
+    $ip     = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 
     if ($contentTitle === '') {
         echo json_encode(['success' => false, 'error' => 'Content title is required.']);
@@ -24,5 +24,8 @@
 
     $ok = addRequest($ip, $contentTitle, $categoryRequested, $message);
 
-    echo json_encode(['success' => $ok, 'message' => $ok ? 'Your request has been submitted. Thank you!' : 'Submission failed. Please try again.']);
+    echo json_encode([
+        'success' => $ok,
+        'message' => $ok ? 'Your request has been submitted. Thank you!' : 'Submission failed. Please try again.'
+    ]);
 ?>
